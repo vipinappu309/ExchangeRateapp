@@ -9,6 +9,7 @@ import com.mycompany.currencytest.Dao.ConvertResponse;
 import com.mycompany.currencytest.Dao.ExchangeRateResponse;
 import com.mycompany.currencytest.exception.CustomException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -17,12 +18,10 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author vipin
  */
+@Service
 public class ExchnageRateService {
-    @Value("${api.url}")
-    private String apiUrl;
-
-    @Value("${api.key}")
-    private String apiKey;
+   @Value("${exchange.api.url}")
+    private String exchangeApiUrl;
 
     private final RestTemplate restTemplate;
 
@@ -30,26 +29,39 @@ public class ExchnageRateService {
         this.restTemplate = restTemplate;
     }
 
-    public ExchangeRateResponse getExchangeRates(String base) throws RestClientException {
-        String url = String.format("%s?base=%s&apikey=%s", apiUrl, base, apiKey);
-        return restTemplate.getForObject(url,ExchangeRateResponse.class);
+    // Fetch exchange rates for a base currency
+    public ConvertResponse getExchangeRates(String baseCurrency) throws RestClientException {
+        String url = exchangeApiUrl + "?base=" + baseCurrency;
+
+        ResponseEntity<ConvertResponse> response = restTemplate.getForEntity(url, ConvertResponse.class);
+
+        if (response.getBody() == null) {
+            throw new RuntimeException("Error fetching exchange rates");
+        }
+
+        return response.getBody();
     }
 
+    // Convert the currency
     public ConvertResponse convertCurrency(ConvertRequest request) throws RestClientException {
-        ExchangeRateResponse rates = getExchangeRates(request.getFrom());
+        ConvertResponse rates = getExchangeRates(request.getFrom());
 
-        if (rates.getRates() == null || !rates.getRates().containsKey(request.getTo())) {
-            throw new CustomException("Currency not supported: " + request.getTo());
+        Double fromRate = rates.getConvertedAmount();  // This will be fetched from rates response for 'from' currency
+        Double toRate = rates.getConvertedAmount();    // This will be fetched from rates response for 'to' currency
+
+        if (fromRate == null || toRate == null) {
+            throw new IllegalArgumentException("Invalid currency codes");
         }
-        double rate = rates.getRates().get(request.getTo());
-        double convertedAmount = request.getAmount() * rate;
 
-        return new ConvertResponse(
-                request.getFrom(),
-                request.getTo(),
-                request.getAmount(),
-                convertedAmount
-        );
+        double convertedAmount = (request.getAmount() / fromRate) * toRate;
+
+        ConvertResponse conversionResponse = new ConvertResponse();
+        conversionResponse.setFrom(request.getFrom());
+        conversionResponse.setTo(request.getTo());
+        conversionResponse.setAmount(request.getAmount());
+        conversionResponse.setConvertedAmount(convertedAmount);
+
+        return conversionResponse;
     }
     
 }

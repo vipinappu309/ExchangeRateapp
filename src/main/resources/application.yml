@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+api:
+  url: https://api.exchangerate-api.com/v4/latest
+  key: a9b2659429275e620486b69c

@@ -9,6 +9,7 @@ import com.mycompany.currencytest.Dao.ConvertResponse;
 import com.mycompany.currencytest.Dao.ExchangeRateResponse;
 import com.mycompany.currencytest.exception.CustomException;
 import com.mycompany.currencytest.service.ExchnageRateService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
@@ -21,20 +22,22 @@ import org.springframework.web.client.RestClientException;
 @RequestMapping("/api")
 public class ExchangeRateController {
 
-    private final ExchnageRateService exchangeRateService;
+    private final ExchnageRateService currencyService;
 
-    public ExchangeRateController(ExchnageRateService exchangeRateService) {
-        this.exchangeRateService = exchangeRateService;
+    @Autowired
+    public ExchangeRateController(ExchnageRateService currencyService) {
+        this.currencyService = currencyService; 
     }
 
+    // GET endpoint for fetching exchange rates
     @GetMapping("/rates")
-    public ExchangeRateResponse getExchangeRates(@RequestParam(defaultValue = "USD") String base) throws RestClientException {
-        return exchangeRateService.getExchangeRates(base);
+    public ConvertResponse getExchangeRates(@RequestParam(value = "base", defaultValue = "USD") String baseCurrency) throws RestClientException {
+        return currencyService.getExchangeRates(baseCurrency);
     }
 
+    // POST endpoint for converting currency
     @PostMapping("/convert")
     public ConvertResponse convertCurrency(@RequestBody ConvertRequest request) throws RestClientException {
-        return exchangeRateService.convertCurrency(request);
+        return currencyService.convertCurrency(request);
     }
-    
 }

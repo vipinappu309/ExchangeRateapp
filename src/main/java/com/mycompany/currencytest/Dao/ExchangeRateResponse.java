@@ -10,25 +10,16 @@ import java.util.Map;
  * @author vipin
  */
 public class ExchangeRateResponse {
-     private String base;
-    private String date;
+    private String baseCurrency;
     private Map<String, Double> rates;
 
-    // Getters and Setters
-    public String getBase() {
-        return base;
+    // Getters and setters
+    public String getBaseCurrency() {
+        return baseCurrency;
     }
 
-    public void setBase(String base) {
-        this.base = base;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+    public void setBaseCurrency(String baseCurrency) {
+        this.baseCurrency = baseCurrency;
     }
 
     public Map<String, Double> getRates() {

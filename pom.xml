@@ -4,86 +4,106 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
-    <artifactId>exchange-rate-app</artifactId>
-    <version>1.0.0</version>
+    <groupId>com.mycompany</groupId>
+    <artifactId>currencytest</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Exchange Rate App</name>
-    <description>A Spring Boot Application for currency conversion using Exchange Rate API</description>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version> <!-- Latest Spring Boot version -->
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
+    <name>currencytest</name>
+    <description>Currency Conversion App</description>
 
     <properties>
-        <java.version>8</java.version> 
+        <java.version>17</java.version> <!-- Set your Java version here -->
     </properties>
 
     <dependencies>
-        <!-- Spring Boot Starter Web (for building RESTful APIs) -->
+        <!-- Spring Boot Web Dependency -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.1.0</version>  
+            <version>2.7.5</version>
         </dependency>
 
-        <!-- Spring Boot Starter (base dependencies for Spring Boot apps) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <!-- Spring Boot DevTools (optional for hot reload) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- Spring Boot Actuator (optional for monitoring and metrics) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-        <!-- Lombok (optional for reducing boilerplate code like getters, setters, etc.) -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version> <!-- Latest version -->
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Spring Boot Configuration Processor (optional for configuration metadata) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- Spring Boot Starter Test (for unit testing and test utilities) -->
+        <!-- Spring Boot Test Dependency for testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.7.5</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring Web dependency (for web applications) -->
+        <!-- JUnit 5 Dependencies -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>4.3.30.RELEASE</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.1</version> <!-- JUnit 5 version -->
+            <type>jar</type>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito Dependency (for mocking) -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring WebFlux for RestTemplate -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>3.1.2</version>
-            <type>jar</type>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>2.7.5</version>
+        </dependency>
+
+        <!-- Jackson Databind Dependency for JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.13.3</version>
+        </dependency>
+
+        <!-- Spring Boot Starter for Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>2.7.5</version>
+        </dependency>
+
+        <!-- Spring Boot Starter for Actuator (Optional) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>2.7.5</version>
+        </dependency>
+
+        <!-- Spring Boot Starter for Data JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>2.7.5</version>
+        </dependency>
+
+        <!-- H2 Database for in-memory DB during development -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.210</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Lombok for reducing boilerplate code (Optional) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -93,34 +113,41 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>5.1.1.RELEASE</version>
+            <artifactId>spring-test</artifactId>
+            <version>6.2.1</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
+            <artifactId>spring-boot-test</artifactId>
             <version>2.6.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>3.1.2</version>
             <type>jar</type>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Spring Boot Maven Plugin (for building and running Spring Boot applications) -->
+            <!-- Spring Boot Maven Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.5</version>
             </plugin>
 
-            <!-- Maven Compiler Plugin (for Java compilation) -->
+            <!-- Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1.0</version> <!-- Use a compatible version of the compiler plugin -->
+                <version>3.8.1</version>
                 <configuration>
-                    <source>8</source> <!-- Java source version -->
-                    <target>8</target> <!-- Java target version -->
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
